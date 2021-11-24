@@ -5,7 +5,7 @@
 #include <time.h>
 
 #define N 15	// 상자 배열 크기
-#define L 3		// 1번 상자 위치, 초기 섞는 횟수 
+#define L 3		// 1번 상자 위치
 
 void printing();
 void setting(BOX, BOX, BOX);
@@ -36,7 +36,7 @@ int playerCoin = 500;
 int selectCoin = 500;
 
 // 섞는 속도, 횟수
-int t = 10, cnt = L;
+int t = 10, cnt = 3;
 
 // 상자
 typedef struct {
@@ -57,6 +57,41 @@ void printing() {
 	}
 	printf("\n");
 }
+
+// 게임 종료
+bool gameover = 0;
+
+void gameOver() {
+	printf("\n");
+	printf("     ■■       ■      ■  ■   ■■■        ■■    ■    ■  ■■■   ■■      \n");
+	printf("   ■         ■  ■   ■ ■ ■  ■          ■    ■   ■  ■   ■       ■  ■    \n");
+	printf("   ■    ■   ■■■   ■    ■  ■■■      ■    ■    ■■    ■■■   ■ ■     \n");
+	printf("     ■■     ■  ■   ■    ■  ■■■        ■■       ■     ■■■   ■  ■    \n");
+	Sleep(1500);
+	gameover = 1;
+}
+
+// WIN
+void win() {
+	printf("\n");
+	printf("   ■    ■  ■  ■   ■     \n");
+	printf("   ■ ■ ■  ■  ■■ ■     \n");
+	printf("   ■ ■ ■  ■  ■ ■■     \n");
+	printf("    ■ ■    ■  ■   ■     \n");
+	printf("\n");
+}
+
+// LOSE
+void lose() {
+	printf("\n");
+	printf("   ■       ■■   ■■■   ■■■   \n");
+	printf("   ■      ■  ■  ■■■   ■       \n");
+	printf("   ■      ■  ■      ■   ■■■   \n");
+	printf("   ■■■   ■■   ■■■   ■■■   \n");
+	printf("\n");
+
+}
+
 
 // # 교환, 왼쪽에 있는 # : box_1, 오른쪽에 있는 # : box_2
 // 교환과 상관없는 #은 유지 : maintain
@@ -148,22 +183,37 @@ void randomMix(BOX box1, BOX box2, BOX box3) {
 
 void playerResult(bool bettingResult, int bettingCoin, int turn) {
 	// player 배팅 결과
+	printf("  @는 _%d_상자에 있었습니다.\n\n", p_key);
+
 	if (bettingResult) {
+		// betting에 성공하셨습니다.
 		playerCoin = playerCoin + (bettingCoin * turn);
-		printf("betting에 성공하셨습니다.\n");
-		printf("%d * %d = %d 코인을 얻었습니다.\n", bettingCoin, turn, bettingCoin * turn);
+		printf("\n");
+		printf("  b"); Sleep(100); printf("e"); Sleep(100); printf("t"); Sleep(100); printf("t"); Sleep(100);
+		printf("i"); Sleep(100); printf("n"); Sleep(100); printf("g"); Sleep(100);
+		printf("에"); Sleep(100); printf(" 성"); Sleep(100); printf("공"); Sleep(100); printf("하"); Sleep(100);
+		printf("하"); Sleep(100); printf("셨"); Sleep(100); printf("습"); Sleep(100); printf("니"); Sleep(100); printf("다.\n"); Sleep(100);
+		printf("  %d * %d = %d 코인을 얻었습니다.\n", bettingCoin, turn, bettingCoin * turn);
 	}
 	else {
 		playerCoin -= bettingCoin;
-		printf("betting에 실패하셨습니다.\n");
-		printf("%d 코인을 잃었습니다.\n", bettingCoin);
+		// betting에 실패하셨습니다.
+		printf("\n");
+		printf("  b"); Sleep(100); printf("e"); Sleep(100); printf("t"); Sleep(100); printf("t"); Sleep(100);
+		printf("i"); Sleep(100); printf("n"); Sleep(100); printf("g"); Sleep(100);
+		printf("에"); Sleep(100); printf(" 실"); Sleep(100); printf("패"); Sleep(100); printf("하"); Sleep(100);
+		printf("하"); Sleep(100); printf("셨"); Sleep(100); printf("습"); Sleep(100); printf("니"); Sleep(100); printf("다.\n"); Sleep(100);
+		printf("  %d 코인을 잃었습니다.\n", bettingCoin);
 	}
 
 	int t = 0;
 
-	printf("\n");
-	printf("현재 가지고 있는 코인은 %d 입니다.\n", playerCoin);
-	printf("기다리면 다음 턴으로 넘어갑니다.\n");
+	printf("\n\n");
+	printf("  현"); Sleep(100); printf("재"); Sleep(100); printf(" 가"); Sleep(100); printf("지"); Sleep(100); printf("고"); Sleep(100);
+	printf(" 있"); Sleep(100); printf("는"); Sleep(100);
+	printf(" 코"); Sleep(100); printf("인"); Sleep(100); printf("은"); Sleep(100); printf(" %d", playerCoin); Sleep(100);
+	printf(" 입"); Sleep(100); printf("니"); Sleep(100); printf("다.\n"); Sleep(100);
+	printf("  기다리면 다음으로 넘어갑니다.\n");
 
 	Sleep(3500);
 	system("cls");
@@ -173,30 +223,33 @@ void playerResult(bool bettingResult, int bettingCoin, int turn) {
 bool playerPlay(int* bettingCoin) {
 
 	// playerKey = 0
-	printf("몇 번째 상자를 고르시겠습니까?\n");
-	printf("[ 1번상자 = 1, 2번상자 = 2, 3번상자 = 3 ]\n");
-	printf("=> ");
+	printf("\n");
+	printf("	몇 번째 상자를 고르시겠습니까?\n");
+	printf("	[ 1번상자 = 1, 2번상자 = 2, 3번상자 = 3 ]\n");
+	printf("  => ");
 	while (1) {
 		scanf_s("%d", &playerKey);
 		if(playerKey == 1 || playerKey == 2 || playerKey == 3){
 			break;
 		}
 		else {
-			printf("1, 2, 3 중에 골라주세요.\n");
+			printf("\n");
+			printf("	1, 2, 3 중에 골라주세요.\n");
 		}
 	}
 	printf("\n");
 
-	printf("현재 가지고 있는 코인은 %d입니다.\n", playerCoin);
-	printf("몇 코인을 betting 하시겠습니까? (양수값으로 입력해주세요)\n");
-	printf("=> ");
+	printf("	현재 가지고 있는 코인은 %d입니다.\n", playerCoin);
+	printf("	몇 코인을 betting 하시겠습니까? (양수값으로 입력해주세요)\n");
+	printf("  => ");
 	while (1) {
 		scanf_s("%d", &*bettingCoin);
 		if (1 <= *bettingCoin && *bettingCoin <= playerCoin) {
 			break;
 		}
 		else {
-			printf("1코인이상, 가지고 있는 코인이하로 해주세요.\n");
+			printf("\n");
+			printf("	1코인이상, 가지고 있는 코인이하로 해주세요.\n");
 		}
 	}
 	printf("\n");
@@ -220,7 +273,7 @@ bool withPlay_select(int* select_bettingCoin, int size) {
 	int select_key = 0;	// 인공지능이 고른 상자
 	srand((unsigned int)time(NULL));
 
-	if (size == 5) {
+	if (size == 5 || playerKey != p_key) {
 		select_key = p_key;
 		*select_bettingCoin = selectCoin;
 	}
@@ -232,8 +285,8 @@ bool withPlay_select(int* select_bettingCoin, int size) {
 		}
 	}	
 
-	printf("인공지능은 [ %d ]번째 상자를 골랐습니다.\n", select_key);
-	printf("인공지능은 [ %d ]코인을 betting 했습니다.\n", *select_bettingCoin);
+	printf("	인공지능은 [ %d ]번째 상자를 골랐습니다.\n", select_key);
+	printf("	인공지능은 [ %d ]코인을 betting 했습니다.\n", *select_bettingCoin);
 	printf("\n");
 	
 	if (p_key == select_key) return true;
@@ -247,18 +300,23 @@ void withPlay(BOX box1, BOX box2, BOX box3) {
 	for (int turn = 1; turn <= 5; turn++) {
 
 		if (playerCoin <= 0){
+			// 플레이어 코인 0 이하
+			printf("  player 코인이 0이하가 되었습니다.\n\n");
 			gameOver(); break;
 		}
 		else if (selectCoin <= 0) {
-			printf("player가 이겼습니다.\n");
+			// 인공지능 코인이 0 이하
+			printf("  player가 이겼습니다.\n\n");
+			win();
 			break;
 		}
 		else {
 			int select_bettingCoin = 0;
 			int bettingCoin = 0;
-			printf("%d 턴 입니다.\n", turn);
-			printf("@위치는 [%d]상자에 있습니다.\n", p_key);
-			Sleep(2000);
+			printf("\n");
+			printf("	%d 턴 입니다.\n\n", turn);
+			printf("	[ @위치는 _%d_상자에 있습니다.]\n", p_key);
+			Sleep(2500);
 			system("cls");
 
 			// 초기 화면
@@ -272,61 +330,72 @@ void withPlay(BOX box1, BOX box2, BOX box3) {
 			player_p = playerPlay(&bettingCoin);
 			select_p = withPlay_select(&select_bettingCoin, turn);
 
-			// 인공지능 -> 베팅 결과 구현
-			// 둘다 성공하는 경우는,,,? => 본인 금액 그대로 가져감
-			// 구현해야하는 것 금액이 0원이면 game over
+			printf("  [ @는 _%d_상자에 있었습니다.]\n\n", p_key);
+
+			// 둘다 성공, 둘중 하나 실패
 			if (select_p == player_p) {
 				// 둘다 성공하는 경우
 				playerCoin = playerCoin + (bettingCoin * turn);
 				selectCoin = selectCoin + (select_bettingCoin * turn);
 
 				printf("\n");
-				printf("모두 betting에 성공하셨습니다.\n");
-				printf("betting한 금액을 얻습니다.\n");
-				printf("인공지능은 %d * %d = %d코인을 얻었습니다.\n", select_bettingCoin, turn, select_bettingCoin * turn);
-				printf("player는 %d * %d = %d 코인을 얻었습니다.\n", bettingCoin, turn, bettingCoin * turn);
+				printf("  모두 betting에 성공하셨습니다.\n");
+				printf("  betting한 금액을 얻습니다.\n\n");
+				printf("  인공지능은 %d * %d = %d코인을 얻었습니다.\n", select_bettingCoin, turn, select_bettingCoin * turn);
+				printf("  player는 %d * %d = %d 코인을 얻었습니다.\n", bettingCoin, turn, bettingCoin * turn);
 			}
 			else if (player_p) {
 				playerCoin = playerCoin + (select_bettingCoin * turn);
 				selectCoin -= (select_bettingCoin * turn);
-				printf("이겼습니다.\n");
-				printf("player는 %d * %d = %d 코인을 얻었습니다.\n", select_bettingCoin, turn, select_bettingCoin);
+				printf("  이"); Sleep(150); printf("겼"); Sleep(150); printf("습"); Sleep(150); printf("니"); Sleep(150); printf("다.\n"); Sleep(300);
+				printf("  player는 %d * %d = %d 코인을 얻었습니다.\n", select_bettingCoin, turn, select_bettingCoin);
 			}
 			else if (select_p) {
 				selectCoin = selectCoin + (bettingCoin * turn);
 				playerCoin -= (bettingCoin * turn);
-				printf("졌습니다.\n");
-				printf("player는 %d * %d = %d 코인을 잃었습니다.\n", bettingCoin, turn, bettingCoin * turn);
+				printf("  졌"); Sleep(150); printf("습"); Sleep(150); printf("니"); Sleep(150); printf("다.\n"); Sleep(300);
+				printf("  player는 %d * %d = %d 코인을 잃었습니다.\n", bettingCoin, turn, bettingCoin * turn);
 			}
 
 			printf("\n");
-			printf("인공지능이 가지고 있는 코인은 %d 입니다.\n", selectCoin);
+			// 인공지능이 가지고 있는 코인 출력
+			printf("  인"); Sleep(100); printf("공"); Sleep(100); printf("지"); Sleep(100); printf("능"); Sleep(100); printf("이"); Sleep(100);
+			printf(" 가"); Sleep(100); printf("지"); Sleep(100); printf("고"); Sleep(100); printf(" 있"); Sleep(100); printf("는"); Sleep(100);
+			printf(" 코"); Sleep(100); printf("인"); Sleep(100); printf("은"); Sleep(100); printf(" %d", selectCoin); Sleep(100);
+			printf(" 입"); Sleep(100); printf("니"); Sleep(100); printf("다.\n"); Sleep(100);
 
 			printf("\n");
-			printf("현재 가지고 있는 코인은 %d 입니다.\n", playerCoin);
-			printf("기다리면 다음 턴으로 넘어갑니다.\n");
+			// 현재가지고 있는 코인 출력
+			printf("  현"); Sleep(100); printf("재"); Sleep(100); printf(" 가"); Sleep(100); printf("지"); Sleep(100); printf("고"); Sleep(100);
+			printf(" 있"); Sleep(100); printf("는"); Sleep(100); 
+			printf(" 코"); Sleep(100); printf("인"); Sleep(100); printf("은"); Sleep(100); printf(" %d", playerCoin); Sleep(100);
+			printf(" 입"); Sleep(100); printf("니"); Sleep(100); printf("다.\n"); Sleep(100);
+
+			printf("\n");
+			printf("  기다리면 다음으로 넘어갑니다.\n");
 
 			Sleep(8000);
 			system("cls");
 
 			if (turn == 5) {
+				// 5턴이 모두 끝났을때
 				if (playerCoin > selectCoin) {
-					printf("player가 이겼습니다.\n");
+					printf("  player가 이겼습니다.\n");
+					win();
 				}
 				else if (playerCoin < selectCoin) {
-					printf("player가 졌습니다.\n");
+					printf("  player가 졌습니다.\n");
+					lose();
 				}
 			}
 		}		
 	}
 }
 
-void gameOver() {
-	printf("\n");
-	printf("     ■■       ■      ■  ■   ■■■        ■■    ■    ■  ■■■   ■■      \n");
-	printf("   ■         ■  ■   ■ ■ ■  ■          ■    ■   ■  ■   ■       ■  ■    \n");
-	printf("   ■    ■   ■■■   ■    ■  ■■■      ■    ■    ■■    ■■■   ■ ■     \n");
-	printf("     ■■     ■  ■   ■    ■  ■■■        ■■       ■     ■■■   ■  ■    \n");
+void Start() {
+
+	printf("[ @이를 찾아라! ]\n");
+
 
 }
 
@@ -344,13 +413,23 @@ int main(void) {
 	BOX box2 = { 2 * L + 1 };	// 7
 	BOX box3 = { 3 * L + 2 };	// 11
 
-	while (1) {
+	while (1) {		
+
+		cnt = 3;	// 섞는 횟수 3으로 초기화
+
 		printf("\n");
-		printf("	혼자게임을 원하시면 1 \n");
-		printf("	인공지능과 함께게임을 원하시면 2\n");
-		printf("	나가기 0\n");
-		printf("=> ");
-		scanf_s("%d", &startGame);
+		printf("  playerCoin = %d\n\n", playerCoin);
+		printf("	혼자게임을 원하시면 1 \n\n");
+		printf("	인공지능과 함께게임을 원하시면 2\n\n");
+		printf("	나가기 0\n\n");
+		printf("  => ");
+
+		if (gameover) {
+			startGame = 0;
+		}
+		else {
+			scanf_s("%d", &startGame);
+		}
 
 		system("cls");
 
@@ -363,8 +442,9 @@ int main(void) {
 				}
 
 				else {
-					printf("%d 턴 입니다.\n", turn);
-					printf("@위치는 [%d]상자에 있습니다.\n", p_key);
+					printf("\n");
+					printf("	%d 턴 입니다.\n", turn);
+					printf("	@위치는 _%d_상자에 있습니다.\n", p_key);
 					Sleep(2000);
 					system("cls");
 
@@ -387,8 +467,8 @@ int main(void) {
 
 		else if (startGame == 0) {
 			printf("\n");
-			printf("게임을 종료합니다.\n");
-			printf("player coin = %d\n", playerCoin);
+			printf("  게임을 종료합니다.\n");
+			printf(  "player coin = %d\n", playerCoin);
 			break;
 		}
 	}
