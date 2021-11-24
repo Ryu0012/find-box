@@ -97,8 +97,6 @@ void lose() {
 // 교환과 상관없는 #은 유지 : maintain
 void setting(BOX box_1, BOX box_2, BOX maintain) {
 
-	// key 가 교환하려는 #상자에 있는 경우 -> 위치 변경
-	// 아니면 그대로 유지
 	if (key == box_1.pol) {
 		key = box_2.pol;
 	}
@@ -114,7 +112,7 @@ void setting(BOX box_1, BOX box_2, BOX maintain) {
 	box_2.det = -1;	// 오른쪽 # 진행방향: 왼쪽 (-1)
 
 	for (int i = 0; i < size; i++) {
-		// 10 밀리세컨즈 지나고 지움
+		
 		Sleep(t);
 		system("cls");
 
@@ -184,6 +182,7 @@ void randomMix(BOX box1, BOX box2, BOX box3) {
 void playerResult(bool bettingResult, int bettingCoin, int turn) {
 	// player 배팅 결과
 	printf("  @는 _%d_상자에 있었습니다.\n\n", p_key);
+	printf("====================================================================\n\n");
 
 	if (bettingResult) {
 		// betting에 성공하셨습니다.
@@ -331,6 +330,7 @@ void withPlay(BOX box1, BOX box2, BOX box3) {
 			select_p = withPlay_select(&select_bettingCoin, turn);
 
 			printf("  [ @는 _%d_상자에 있었습니다.]\n\n", p_key);
+			printf("====================================================================\n\n");
 
 			// 둘다 성공, 둘중 하나 실패
 			if (select_p == player_p) {
@@ -394,13 +394,17 @@ void withPlay(BOX box1, BOX box2, BOX box3) {
 
 void Start() {
 
-	printf("[ @이를 찾아라! ]\n");
-
-
+	printf("\n");
+	printf("  ■■■■■■■■■■■\n");
+	printf("  ■                  ■\n");
+	printf("  ■   @이를 찾아라!  ■\n");
+	printf("  ■                  ■\n");
+	printf("  ■■■■■■■■■■■\n");
 }
 
 int main(void) {
 	// 혼자게임 / 인공지능과 함께게임 / 나가기 => 혼자 게임 하는 경우 1, 인공지능과 게임 2, 나가기 0
+	Start();
 
 	int startGame = 0;
 	// @ 위치
