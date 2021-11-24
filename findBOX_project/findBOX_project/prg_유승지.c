@@ -466,6 +466,7 @@ int main(void) {
 		}
 		else if (startGame == 2) {
 			// withPlay
+			selectCoin = 500;
 			withPlay(box1, box2, box3);
 		}
 
